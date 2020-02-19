@@ -15,6 +15,7 @@
 
 		<app.runtime>4.2.0</app.runtime>
 		<mule.maven.plugin.version>3.2.7</mule.maven.plugin.version>
+      	<cloudhub.application.name>mule-build-test-app</cloudhub.application.name>
 	</properties>
 
 	<build>
@@ -25,6 +26,22 @@
 				<version>${mule.maven.plugin.version}</version>
 				<extensions>true</extensions>
 				<configuration>
+                  	<cloudHubDeployment>
+						<uri>https://anypoint.mulesoft.com</uri>
+						<muleVersion>${app.runtime}</muleVersion>
+						<username>${anypoint.username}</username>
+						<password>${anypoint.password}</password>
+						<businessGroup>${anypoint.business.group}</businessGroup>
+						<environment>${anypoint.environment.name}</environment>
+						<applicationName>${cloudhub.application.name}</applicationName>
+						<properties>
+							<anypoint.platform.client_id>${anypoint.platform.client_id}</anypoint.platform.client_id>
+							<anypoint.platform.client_secret>${anypoint.platform.client_secret}</anypoint.platform.client_secret>
+							<key>value</key>
+						</properties>
+					</cloudHubDeployment>
+					
+					<classifier>mule-application</classifier>
 				</configuration>
 			</plugin>
 		</plugins>
