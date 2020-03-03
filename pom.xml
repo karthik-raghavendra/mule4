@@ -46,29 +46,44 @@
 					<classifier>mule-application</classifier>
 				</configuration>
 			</plugin>
-		<plugin>
-                <groupId>com.mulesoft.munit.tools</groupId>
-                <artifactId>munit-maven-plugin</artifactId>
-                <version>${munit.version}</version>
-                <executions>
-                    <execution>
-                        <id>test</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>test</goal>
-                            <goal>coverage-report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <coverage>
-                        <runCoverage>true</runCoverage>
-                        <formats>
-                            <format>html</format>
-                        </formats>
-                    </coverage>
-                </configuration>
-            </plugin>
+  
+
+			<plugin>
+				<groupId>com.mulesoft.munit.tools</groupId>
+				<artifactId>munit-maven-plugin</artifactId>
+				<version>${munit.version}</version>
+				<executions>
+					<execution>
+						<id>test</id>
+						<phase>test</phase>
+						<goals>
+							<goal>test</goal>
+							<goal>coverage-report</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<coverage>
+						<runCoverage>true</runCoverage>
+						<failBuild>${failBuild}</failBuild>
+						<requiredApplicationCoverage>${application.coverage}</requiredApplicationCoverage>
+						<requiredResourceCoverage>${resource.coverage}</requiredResourceCoverage>
+						<requiredFlowCoverage>${flow.coverage}</requiredFlowCoverage>
+						<!-- <ignoreFlows>
+							   <ignoreFlow>contact-api-main</ignoreFlow>
+							   <ignoreFlow>contact-api-console</ignoreFlow>
+						 </ignoreFlows> -->
+						<formats>
+							<format>html</format>
+							<format>console</format>
+							<format>json</format>
+						</formats>
+					</coverage>
+				</configuration>
+			</plugin>
+
+
+
         </plugins>
 	</build>
 
