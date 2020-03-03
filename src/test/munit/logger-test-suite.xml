@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="logger-test-suite.xml" />
+	<munit:test name="logger-test-suite-loggerFlowTest" description="Test" doc:id="8362869d-9cf2-47b0-9c10-37a63324ee9c" >
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to loggerFlow" doc:id="9a8983bd-127a-4566-ad7f-d65544729eae" name="loggerFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<logger level="INFO" doc:name="Logger" doc:id="c8d9aef4-c350-4c11-8827-0fc98617e2ec" message="Reached Logger in MUnit"/>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>
