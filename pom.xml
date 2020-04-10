@@ -41,7 +41,7 @@
 							<anypoint.platform.client_secret>${anypoint.platform.client_secret}</anypoint.platform.client_secret>
 							<key>value</key>
 							<sonar.language>mule4</sonar.language>
-							<sonar.sources>src/main/mule</sonar.sources>
+							<sonar.sources>src/main</sonar.sources>
 						</properties>
 					</cloudHubDeployment>
 					
