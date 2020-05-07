@@ -3,7 +3,7 @@
 <mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
-	<flow name="loggerFlow" doc:id="e9356f20-3213-4d1b-b157-72ccef3f6d1f" >
+	<flow name="logger-flow" doc:id="e9356f20-3213-4d1b-b157-72ccef3f6d1f" >
 		<scheduler doc:name="Scheduler" doc:id="7c053ef7-8300-4554-9a33-bf4852064131" >
 			<scheduling-strategy >
 				<fixed-frequency frequency="2" timeUnit="MINUTES"/>
