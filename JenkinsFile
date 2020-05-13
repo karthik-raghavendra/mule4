@@ -1,0 +1,65 @@
+pipeline {
+    agent {
+        node {
+            label 'master'
+        }
+    }
+    tools {
+        maven 'maven'
+    }
+    stages {
+        stage ('CleanWorkspace') {
+            steps {
+                cleanWs()
+                sh ''' echo "Cleaning workspace..."'''
+            }
+        }
+    
+        stage ('Checkout') {
+            environment {
+                BB_URL="${BB_URL}"
+                BB_BR="${BB_BRANCH}"
+                BB_USER="${BB_USER}"
+            }
+            steps {
+                git(
+                    url: BB_URL,
+                    credentialsId: BB_USER,
+                    branch: BB_BR
+                )
+            }
+        }
+        
+        stage ('Build') {
+            environment {
+                projDir="${MULE_PROJ_DIR}"
+            }
+            steps {
+                echo 'Running Maven Clean and Package the Artifact ...'
+                sh 'mvn clean package -Dhttps.protocols=TLSv1.2 -DskipTests'
+            }
+        }
+        
+        stage ('Analysis') {
+            environment {
+                projDir="${MULE_PROJ_DIR}"
+            }
+            steps {
+                echo 'Running Static Code Analyzer ...'
+                withSonarQubeEnv('sonarqube') {
+                sh 'mvn sonar:sonar -Dsonar.language=Mule -Dsonar.sources=src'
+                }
+            }
+        }
+        
+        stage("Quality Gate") {
+            steps {
+                timeout(time: 60, unit: 'SECONDS') {
+                    // Parameter indicates whether to set pipeline to UNSTABLE if Quality Gate fails
+                    // true = set pipeline to UNSTABLE, false = don't
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+    }
+}
