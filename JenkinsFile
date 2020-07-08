@@ -33,10 +33,31 @@ pipeline {
         stage ('Build') {
             environment {
                 projDir="${MULE_PROJ_DIR}"
+                //sh 'printenv'
+                VERSION=readMavenPom().getVersion()
+                IMAGE=readMavenPom().getArtifactId()
             }
             steps {
                 echo 'Running Maven Clean and Package the Artifact ...'
-                sh 'mvn clean package -Dhttps.protocols=TLSv1.2 -DskipTests'
+                echo "The jar name is ${IMAGE}-${VERSION}-mule-application.jar"
+                sh '''mvn clean package -Dhttps.protocols=TLSv1.2 -DskipTests
+                cp target/*.jar ${IMAGE}-${VERSION}-mule-application.jar
+                '''
+            }
+        }
+        
+        stage ('Running Munit test') {
+            steps {
+                echo 'Running custom tests ...'
+                sh 'mvn test -P${MAVEN_PROFILE}'
+				publishHTML target: [
+					allowMissing: false,
+					alwaysLinkToLastBuild: false,
+					keepAll: true,
+					reportDir: 'target/site/munit/coverage',
+					reportFiles: 'summary.html',
+					reportName: 'Coverage Report'
+				]
             }
         }
         
@@ -46,8 +67,8 @@ pipeline {
             }
             steps {
                 echo 'Running Static Code Analyzer ...'
-                withSonarQubeEnv('sonarqube') {
-                sh 'mvn sonar:sonar -Dsonar.language=Mule -Dsonar.sources=src'
+                withSonarQubeEnv('sonarcube') {
+                sh 'mvn sonar:sonar -Dsonar.language=mule4 -Dsonar.sources=src'
                 }
             }
         }
@@ -59,6 +80,27 @@ pipeline {
                     // true = set pipeline to UNSTABLE, false = don't
                     waitForQualityGate abortPipeline: true
                 }
+            }
+        }
+        
+        stage ('NexusUpload') {
+            environment {
+                VERSION=readMavenPom().getVersion()
+                IMAGE=readMavenPom().getArtifactId()
+                GROUP_ID=readMavenPom().getGroupId()
+            }
+            steps {
+                sh 'printenv'
+                nexusArtifactUploader(
+                    artifacts: [[artifactId: "$IMAGE-$VERSION-mule-application", classifier: '', file:"$IMAGE-$VERSION-mule-application.jar", type: 'jar']],
+                    credentialsId: 'nexus-id',
+                    groupId: "$GROUP_ID",
+                    nexusUrl: '40.77.62.209:8081/nexus',
+                    nexusVersion: 'nexus2',
+                    protocol: 'http',
+                    repository: 'releases',
+                    version: '$BUILD_NUMBER'
+                )
             }
         }
     }
