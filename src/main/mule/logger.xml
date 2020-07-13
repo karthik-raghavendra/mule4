@@ -4,7 +4,8 @@
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
-	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="65049fc7-3cf4-413f-b834-44880340be5b" file="properties/source.dev.properties" key="myKey" />
+	<!-- <secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="65049fc7-3cf4-413f-b834-44880340be5b" file="properties/source.dev.properties" key="myKey" />
+	-->
 	<flow name="loggerFlow" doc:id="e9356f20-3213-4d1b-b157-72ccef3f6d1f" >
 		<scheduler doc:name="Scheduler" doc:id="7c053ef7-8300-4554-9a33-bf4852064131" >
 			<scheduling-strategy >
